@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Crypto Publisher</title>
+	<script src="https://cdn.pubnub.com/sdk/javascript/pubnub.4.18.0.min.js"></script>
+</head>
+<body>
+	<script type="text/javascript">
+		var pubnub = new PubNub({
+		    publishKey:   'pub-c-615b4e48-90a2-4ff1-b68d-cb4f87232f6f',
+		    subscribeKey: 'sub-c-8260286e-37b7-11eb-99ef-fa1b309c1f97'
+			});
+		var xhr = new XMLHttpRequest();
+		function processRequest(e) {
+ 			if (xhr.readyState == 4 && xhr.status == 200) {
+		  	var response = JSON.parse(xhr.responseText);
+		        console.log(response);
+		        pubnub.publish({
+					    channel: 'bitcoin-feed',
+					    message: {
+					      eon: {
+					        'BitCoin': response.BTC.USD.toFixed(2)
+					      }
+					    }
+					  });
+		    }
+		}
+		function mainApp() {
+			setInterval(function(){
+				xhr.open('GET', 'https://min-api.cryptocompare.com/data/pricemulti?fsyms=BTC&tsyms=USD', true)
+				xhr.send();
+				xhr.onreadystatechange = processRequest;
+			}, 10000)
+		};
+		mainApp();
+	</script>
+</body>
+</html>

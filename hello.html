@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Bitcoin Price Tracker</title>
+		<!-- <script src="https://cdn.pubnub.com/sdk/javascript/pubnub.4.18.0.min.js"></script> -->
+		<script type="text/javascript" src="https://pubnub.github.io/eon/v/eon/1.0.0/eon.js"></script>
+		<link type="text/css" rel="stylesheet" href="https://pubnub.github.io/eon/v/eon/1.0.0/eon.css"/>
+		<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+		<link rel= "stylesheet" type= "text/css" href= "style.css">
+</head>
+<body>
+
+	<!-- Some fun styling! -->
+	<style>
+		body {
+	background: linear-gradient(-45deg, #9fa4c4, #b3cdd1, #23a6d5, #23d5ab);
+	background-size: 400% 400%;
+	animation: gradient 15s ease infinite;
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+		h4{
+			text-align: center;
+			font-family: "verdana", sans-serif;
+   			text-transform: uppercase;
+}
+		h2 {
+			text-align: center;
+			font-family: "Monaco", serif;
+			color: black;
+		}
+
+
+		#buttons {
+			display: block;
+  			margin-left: auto;
+  			margin-right: auto;
+  			width: 50%;
+		}
+
+		#bitcoinChart {
+
+
+			background-color: white;
+			display: block;
+  			margin-left: auto;
+  			margin-right: auto;
+  			width: 60%;
+			padding: 20px 0px 40px 0px;
+			border-radius: 25px;
+
+
+		}
+
+		.example_c {
+				border: none;
+				background: #404040;
+				color: #ffffff !important;
+				font-weight: 100;
+				padding: 25px;
+				text-transform: uppercase;
+				border-radius: 6px;
+				display: inline-block;
+				transition: all 0.3s ease 0s;
+				}
+			th, td {
+  					padding: 15px;
+					}
+
+
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 10%;
+}
+.container{
+
+	display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+
+
+}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js" integrity="sha256-qM7QTJSlvtPSxVRjVWNM2OfTAz/3k5ovHOKmKXuYMO4=" crossorigin="anonymous"></script>
+
+
+@import url(https://fonts.googleapis.com/css?family=Lato:900);
+ *:before, *:after{
+  box-sizing:border-box;
+}
+body{
+  font-family: 'Lato', sans-serif;
+    ;
+}
+div.foo{
+  width: 40%;
+  margin: 0 auto;
+  text-align: center;
+}
+.letter{
+  display: inline-block;
+  font-weight: 900;
+  font-size: 55px;
+  margin: 4px;
+  position: relative;
+  color: #00B4F1;
+  transform-style: preserve-3d;
+  perspective: 400;
+  z-index: 1;
+}
+.letter:before, .letter:after{
+  position:absolute;
+  content: attr(data-letter);
+  transform-origin: top left;
+  top:0;
+  left:0;
+}
+.letter, .letter:before, .letter:after{
+  transition: all 0.3s ease-in-out;
+}
+.letter:before{
+  color: rgb(65, 63, 63);
+  text-shadow:
+    -1px 0px 1px rgba(255,255,255,.8),
+    1px 0px 1px rgba(0,0,0,.8);
+  z-index: 3;
+  transform:
+    rotateX(0deg)
+    rotateY(-15deg)
+    rotateZ(0deg);
+}
+.letter:after{
+  color: rgba(0,0,0,.11);
+  z-index:2;
+  transform:
+    scale(1.08,1)
+    rotateX(0deg)
+    rotateY(0deg)
+    rotateZ(0deg)
+    skew(0deg,1deg);
+}
+.letter:hover:before{
+  color: #fafafa;
+  transform:
+    rotateX(0deg)
+    rotateY(-40deg)
+    rotateZ(0deg);
+}
+.letter:hover:after{
+  transform:
+    scale(1.08,1)
+    rotateX(0deg)
+    rotateY(40deg)
+    rotateZ(0deg)
+    skew(0deg,22deg);
+}
+
+
+</style>
+<br>
+<br>
+<div class="foo">
+	<span class="letter" data-letter="B">B</span>
+	<span class="letter" data-letter="I">I</span>
+	<span class="letter" data-letter="T">T</span>
+	<span class="letter" data-letter="C">C</span>
+	<span class="letter" data-letter="O">O</span>
+	<span class="letter" data-letter="I">I</span>
+	<span class="letter" data-letter="N">N</span>
+	<span class="letter" data-letter=" "> </span>
+	<span class="letter" data-letter=" "> </span>
+	<span class="letter" data-letter=" "> </span>
+	<span class="letter" data-letter="P">P</span>
+	<span class="letter" data-letter="R">R</span>
+	<span class="letter" data-letter="I">I</span>
+	<span class="letter" data-letter="C">C</span>
+	<span class="letter" data-letter="E">E</span>
+	<br>
+	<span class="letter" data-letter="P">P</span>
+	<span class="letter" data-letter="R">R</span>
+	<span class="letter" data-letter="E">E</span>
+	<span class="letter" data-letter="D">D</span>
+	<span class="letter" data-letter="I">I</span>
+	<span class="letter" data-letter="C">C</span>
+	<span class="letter" data-letter="T">T</span>
+	<span class="letter" data-letter="I">I</span>
+	<span class="letter" data-letter="O">O</span>
+	<span class="letter" data-letter="N">N</span>
+</div>
+
+<br>
+<br>
+<br>
+
+	<div id="bitcoinChart"></div>
+
+	<script type="text/javascript">
+		// You will only be subscribing to a channel, so no need for a publish key
+		var pubnub = new PubNub({
+		    subscribeKey: 'sub-c-8260286e-37b7-11eb-99ef-fa1b309c1f97' // replace with your own sub-key
+		  });
+		// EON Charts configuration
+		var pointLimit = 15;
+		var topPadding = 100;
+		var bottomPadding = 100;
+		var eonData = {labels: true,type: 'line',
+				colors: {
+					BitCoin: '#9fa4c4',
+				},
+
+
+
+	};
+		var eonAxis = {y: {padding: {top:topPadding, bottom:bottomPadding}},
+									 x: {type: 'timeseries',tick: {format: '%H:%M:%S'}}};
+		// Create the EON Chart for BitCoin and bind its div
+		eon.chart({
+		  channels: ['bitcoin-feed'],
+		  history: true,
+		  flow: true,
+		  limit: pointLimit,
+		  pubnub: pubnub,
+		  generate: {
+		    bindto: '#bitcoinChart',
+		    data: eonData,
+		    axis: eonAxis
+		  }
+		});
+	</script>
+
+
+
+<div id = "buttons">
+<table>
+<tr>
+<td>
+<form action='/load' method="post" >
+
+  <button type="submit" class="btn btn1">load</button>
+
+    </form>
+</td>
+<td>
+<form action='/train' method="post" >
+
+  <button type="submit" class="btn btn1">train</button>
+
+    </form>
+</td>
+<td>
+<form action='/predict' method="post" >
+
+  <button type="submit" class="btn btn1">Predict</button>
+
+    </form>
+</td>
+</tr>
+</div>
+
+
+</body>
+<div class= "container">
+	<div class="child">
+	{% block content %}
+		{% with messages = get_flashed_messages() %}
+			{% if messages %}
+				{% for msg in messages %}
+					<p>{{msg}}</p>
+				{% endfor %}
+			{% endif %}
+		{% endwith %}
+	{% endblock %}
+	</div>
+	</div>
+
+</html>
